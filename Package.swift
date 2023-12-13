@@ -19,13 +19,19 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
-      .upToNextMajor(from: "0.43.0"))
+      .upToNextMajor(from: "1.0.0")
+    ),
+    .package(
+      url: "https://github.com/sideeffect-io/AsyncExtensions",
+      .upToNextMajor(from: "0.5.2")
+    ),
   ],
   targets: [
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "AsyncExtensions", package: "AsyncExtensions")
       ]
     ),
     .testTarget(
