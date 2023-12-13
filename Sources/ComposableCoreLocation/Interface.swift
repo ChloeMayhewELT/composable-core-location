@@ -257,9 +257,9 @@ public struct LocationManager {
 
   public var authorizationStatus: () -> CLAuthorizationStatus
 
-  public var delegate: () -> EffectPublisher<Action, Never>
+  public var delegate: () -> AsyncStream<Action>
 
-  public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
+  public var dismissHeadingCalibrationDisplay: () async -> Void
 
   public var heading: () -> Heading?
 
@@ -275,37 +275,37 @@ public struct LocationManager {
 
   public var monitoredRegions: () -> Set<Region>
 
-  public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
+  public var requestAlwaysAuthorization: () async -> Void
 
-  public var requestLocation: () -> EffectPublisher<Never, Never>
+  public var requestLocation: () async -> Void
 
-  public var requestWhenInUseAuthorization: () -> EffectPublisher<Never, Never>
+  public var requestWhenInUseAuthorization: () async -> Void
 
-  public var requestTemporaryFullAccuracyAuthorization: (String) -> EffectPublisher<Never, Error>
+  public var requestTemporaryFullAccuracyAuthorization: (String) async throws -> Void
 
-  public var set: (Properties) -> EffectPublisher<Never, Never>
+  public var set: (Properties) async -> Void
 
   public var significantLocationChangeMonitoringAvailable: () -> Bool
 
-  public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  public var startMonitoringForRegion: (Region) async -> Void
 
-  public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  public var startMonitoringSignificantLocationChanges: () async -> Void
 
-  public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
+  public var startMonitoringVisits: () async -> Void
 
-  public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
+  public var startUpdatingHeading: () async -> Void
 
-  public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
+  public var startUpdatingLocation: () async -> Void
 
-  public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  public var stopMonitoringForRegion: (Region) async -> Void
 
-  public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  public var stopMonitoringSignificantLocationChanges: () async -> Void
 
-  public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
+  public var stopMonitoringVisits: () async -> Void
 
-  public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
+  public var stopUpdatingHeading: () async -> Void
 
-  public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
+  public var stopUpdatingLocation: () async -> Void
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
   public func set(
@@ -317,11 +317,11 @@ public struct LocationManager {
     headingOrientation: CLDeviceOrientation? = nil,
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
-  ) -> EffectPublisher<Never, Never> {
+  ) async {
     #if os(macOS) || os(tvOS) || os(watchOS)
       return .none
     #else
-      return self.set(
+      return await self.set(
         Properties(
           activityType: activityType,
           allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
