@@ -46,9 +46,12 @@ extension LocationManager {
       XCTFail("A failing endpoint was accessed: 'LocationManager.authorizationStatus'")
       return .notDetermined
     },
-    delegate: { .failing("LocationManager.delegate") },
+    delegate: {
+      XCTFail("A failing endpoint was accessed: 'LocationManager.delegate'")
+      return .never
+    },
     dismissHeadingCalibrationDisplay: {
-      .failing("LocationManager.dismissHeadingCalibrationDisplay")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.dismissHeadingCalibrationDisplay'")
     },
     heading: {
       XCTFail("A failing endpoint was accessed: 'LocationManager.heading'")
@@ -78,32 +81,32 @@ extension LocationManager {
       XCTFail("A failing endpoint was accessed: 'LocationManager.monitoredRegions'")
       return []
     },
-    requestAlwaysAuthorization: { .failing("LocationManager.requestAlwaysAuthorization") },
-    requestLocation: { .failing("LocationManager.requestLocation") },
+    requestAlwaysAuthorization: { XCTFail("A failing endpoint was accessed: 'LocationManager.requestAlwaysAuthorization'") },
+    requestLocation: { XCTFail("A failing endpoint was accessed: 'LocationManager.requestLocation'") },
     requestWhenInUseAuthorization: {
-      .failing("LocationManager.requestWhenInUseAuthorization")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.requestWhenInUseAuthorization'")
     },
     requestTemporaryFullAccuracyAuthorization: { _ in
-      .failing("LocationManager.requestTemporaryFullAccuracyAuthorization")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.requestTemporaryFullAccuracyAuthorization'")
     },
-    set: { _ in .failing("LocationManager.set") },
+    set: { _ in XCTFail("A failing endpoint was accessed: 'LocationManager.set'") },
     significantLocationChangeMonitoringAvailable: {
-      XCTFail()
+      XCTFail("A failing endpoint was accessed: 'LocationManager.significantLocationChangeMonitoringAvailable'")
       return false
     },
-    startMonitoringForRegion: { _ in .failing("LocationManager.startMonitoringForRegion") },
+    startMonitoringForRegion: { _ in XCTFail("A failing endpoint was accessed: 'LocationManager.startMonitoringForRegion'") },
     startMonitoringSignificantLocationChanges: {
-      .failing("LocationManager.startMonitoringSignificantLocationChanges")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.startMonitoringSignificantLocationChanges'")
     },
-    startMonitoringVisits: { .failing("LocationManager.startMonitoringVisits") },
-    startUpdatingHeading: { .failing("LocationManager.startUpdatingHeading") },
-    startUpdatingLocation: { .failing("LocationManager.startUpdatingLocation") },
-    stopMonitoringForRegion: { _ in .failing("LocationManager.stopMonitoringForRegion") },
+    startMonitoringVisits: { XCTFail("A failing endpoint was accessed: 'LocationManager.startMonitoringVisits'") },
+    startUpdatingHeading: { XCTFail("A failing endpoint was accessed: 'LocationManager.startUpdatingHeading'") },
+    startUpdatingLocation: { XCTFail("A failing endpoint was accessed: 'LocationManager.startUpdatingLocation'") },
+    stopMonitoringForRegion: { _ in XCTFail("A failing endpoint was accessed: 'LocationManager.stopMonitoringForRegion'") },
     stopMonitoringSignificantLocationChanges: {
-      .failing("LocationManager.stopMonitoringSignificantLocationChanges")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.stopMonitoringSignificantLocationChanges'")
     },
-    stopMonitoringVisits: { .failing("LocationManager.stopMonitoringVisits") },
-    stopUpdatingHeading: { .failing("LocationManager.stopUpdatingHeading") },
-    stopUpdatingLocation: { .failing("LocationManager.stopUpdatingLocation") }
+    stopMonitoringVisits: { XCTFail("A failing endpoint was accessed: 'LocationManager.stopMonitoringVisits'") },
+    stopUpdatingHeading: { XCTFail("A failing endpoint was accessed: 'LocationManager.stopUpdatingHeading'") },
+    stopUpdatingLocation: { XCTFail("A failing endpoint was accessed: 'LocationManager.stopUpdatingLocation'") }
   )
 }
