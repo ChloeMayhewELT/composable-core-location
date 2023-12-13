@@ -21,12 +21,17 @@ let package = Package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
       .exact("1.0.0")
     ),
+    .package(
+      url: "https://github.com/sideeffect-io/AsyncExtensions",
+      .exact("0.5.2")
+    ),
   ],
   targets: [
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "AsyncExtensions", package: "AsyncExtensions")
       ]
     ),
     .testTarget(
