@@ -19,11 +19,11 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
-      .exact("1.0.0")
+      .upToNextMajor(from: "1.0.0")
     ),
     .package(
       url: "https://github.com/sideeffect-io/AsyncExtensions",
-      .exact("0.5.2")
+      .upToNextMajor(from: "0.5.2")
     ),
   ],
   targets: [
