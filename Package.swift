@@ -1,14 +1,11 @@
-// swift-tools-version:5.6
+// swift-tools-version:6.0
 
 import PackageDescription
 
 let package = Package(
   name: "composable-core-location",
   platforms: [
-    .iOS(.v13),
-    .macOS(.v10_15),
-    .tvOS(.v13),
-    .watchOS(.v6),
+    .iOS(.v16),
   ],
   products: [
     .library(
@@ -22,8 +19,8 @@ let package = Package(
       .upToNextMajor(from: "1.0.0")
     ),
     .package(
-      url: "https://github.com/sideeffect-io/AsyncExtensions",
-      .upToNextMajor(from: "0.5.2")
+      url: "https://github.com/reddavis/Asynchrone",
+      .upToNextMajor(from: "0.21.0")
     ),
   ],
   targets: [
@@ -31,7 +28,7 @@ let package = Package(
       name: "ComposableCoreLocation",
       dependencies: [
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-        .product(name: "AsyncExtensions", package: "AsyncExtensions")
+        .product(name: "Asynchrone", package: "Asynchrone")
       ]
     ),
     .testTarget(

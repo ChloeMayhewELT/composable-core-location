@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "asyncextensions",
+      "identity" : "asynchrone",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sideeffect-io/AsyncExtensions",
+      "location" : "https://github.com/reddavis/Asynchrone",
       "state" : {
-        "revision" : "1f0729e4f1f6c7166acfac3cec43b3cbe83be0e6",
-        "version" : "0.5.2"
+        "revision" : "1ddfcd3bc93277f68dffb793fc60001902f2517b",
+        "version" : "0.22.0"
       }
     },
     {

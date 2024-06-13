@@ -1,4 +1,4 @@
-import AsyncExtensions
+import Asynchrone
 import Combine
 import ComposableArchitecture
 import CoreLocation
@@ -24,7 +24,7 @@ extension LocationManager {
       let delegate = LocationManagerDelegate(continuation)
       manager.delegate = delegate
     }
-      .share()
+      .shared()
       .eraseToStream()
 
     return Self(
