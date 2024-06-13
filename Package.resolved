@@ -1,14 +1,6 @@
 {
+  "originHash" : "67806c99a415fe709f4dec369982c26736a561f62909444fb589cc189f8cc374",
   "pins" : [
-    {
-      "identity" : "asynchrone",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/reddavis/Asynchrone",
-      "state" : {
-        "revision" : "1ddfcd3bc93277f68dffb793fc60001902f2517b",
-        "version" : "0.22.0"
-      }
-    },
     {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
@@ -118,5 +110,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

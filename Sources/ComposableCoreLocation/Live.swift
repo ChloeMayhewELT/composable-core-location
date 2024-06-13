@@ -1,4 +1,3 @@
-import Asynchrone
 import Combine
 import ComposableArchitecture
 import CoreLocation
@@ -20,29 +19,29 @@ extension LocationManager {
   public static var live: Self {
     let manager = CLLocationManager()
 
-    let delegate = AsyncStream<Action> { continuation in
+    let delegate = {
+      let subject = PassthroughSubject<Action, Never>()
+      let (stream, continuation) = AsyncStream<Action>.makeStream()
       let delegate = LocationManagerDelegate(continuation)
       manager.delegate = delegate
-    }
-      .shared()
-      .eraseToStream()
+      defer {
+        Task { [delegate] in
+          _ = delegate // Retain the delegate for the life-cycle of the task.
+          for await value in stream {
+            subject.send(value)
+          }
+          subject.send(completion: .finished)
+        }
+      }
+      return subject.share().values.eraseToStream()
+    }()
 
     return Self(
       accuracyAuthorization: {
-        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-          if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-            return AccuracyAuthorization(manager.accuracyAuthorization)
-          }
-        #endif
-        return nil
+        AccuracyAuthorization(manager.accuracyAuthorization)
       },
       authorizationStatus: {
-        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-          if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-            return manager.authorizationStatus
-          }
-        #endif
-        return CLLocationManager.authorizationStatus()
+        return manager.authorizationStatus
       },
       delegate: { delegate },
       dismissHeadingCalibrationDisplay: {
@@ -108,23 +107,15 @@ extension LocationManager {
       },
       requestTemporaryFullAccuracyAuthorization: { purposeKey in
         try await withCheckedThrowingContinuation { continuation in
-          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-              manager.requestTemporaryFullAccuracyAuthorization(
-                withPurposeKey: purposeKey
-              ) { error in
-                if let error {
-                  continuation.resume(throwing: error)
-                } else {
-                  continuation.resume()
-                }
-              }
+          manager.requestTemporaryFullAccuracyAuthorization(
+            withPurposeKey: purposeKey
+          ) { error in
+            if let error {
+              continuation.resume(throwing: error)
             } else {
               continuation.resume()
             }
-          #else
-            continuation.resume()
-          #endif
+          }
         }
       },
       set: { properties in
