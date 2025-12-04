@@ -1,6 +1,6 @@
 import Combine
 import ComposableArchitecture
-import CoreLocation
+@preconcurrency import CoreLocation
 
 /// A wrapper around Core Location's `CLLocationManager` that exposes its functionality through
 /// effects and actions, making it easy to use with the Composable Architecture and easy to test.
@@ -178,11 +178,11 @@ import CoreLocation
 /// control, and even what happens when the request for their location fails. It is very easy to
 /// write these tests, and we can test deep, subtle properties of our application.
 ///
-public struct LocationManager {
+public struct LocationManager: Sendable {
   /// Actions that correspond to `CLLocationManagerDelegate` methods.
   ///
   /// See `CLLocationManagerDelegate` for more information.
-  public enum Action: Equatable {
+  public enum Action: Equatable, Sendable {
     case didChangeAuthorization(CLAuthorizationStatus)
 
     @available(tvOS, unavailable)
@@ -253,59 +253,59 @@ public struct LocationManager {
     }
   }
 
-  public var accuracyAuthorization: () -> AccuracyAuthorization?
+  public var accuracyAuthorization: @Sendable () -> AccuracyAuthorization?
 
-  public var authorizationStatus: () -> CLAuthorizationStatus
+  public var authorizationStatus: @Sendable () -> CLAuthorizationStatus
 
-  public var delegate: () -> AsyncStream<Action>
+  public var delegate: @Sendable () -> AsyncStream<Action>
 
-  public var dismissHeadingCalibrationDisplay: () async -> Void
+  public var dismissHeadingCalibrationDisplay: @Sendable () async -> Void
 
-  public var heading: () -> Heading?
+  public var heading: @Sendable () -> Heading?
 
-  public var headingAvailable: () -> Bool
+  public var headingAvailable: @Sendable () -> Bool
 
-  public var isRangingAvailable: () -> Bool
+  public var isRangingAvailable: @Sendable () -> Bool
 
-  public var location: () -> Location?
+  public var location: @Sendable () -> Location?
 
-  public var locationServicesEnabled: () -> Bool
+  public var locationServicesEnabled: @Sendable () -> Bool
 
-  public var maximumRegionMonitoringDistance: () -> CLLocationDistance
+  public var maximumRegionMonitoringDistance: @Sendable () -> CLLocationDistance
 
-  public var monitoredRegions: () -> Set<Region>
+  public var monitoredRegions: @Sendable () -> Set<Region>
 
-  public var requestAlwaysAuthorization: () async -> Void
+  public var requestAlwaysAuthorization: @Sendable () async -> Void
 
-  public var requestLocation: () async -> Void
+  public var requestLocation: @Sendable () async -> Void
 
-  public var requestWhenInUseAuthorization: () async -> Void
+  public var requestWhenInUseAuthorization: @Sendable () async -> Void
 
-  public var requestTemporaryFullAccuracyAuthorization: (String) async throws -> Void
+  public var requestTemporaryFullAccuracyAuthorization: @Sendable (String) async throws -> Void
 
-  public var set: (Properties) async -> Void
+  public var set: @Sendable (Properties) async -> Void
 
-  public var significantLocationChangeMonitoringAvailable: () -> Bool
+  public var significantLocationChangeMonitoringAvailable: @Sendable () -> Bool
 
-  public var startMonitoringForRegion: (Region) async -> Void
+  public var startMonitoringForRegion: @Sendable (Region) async -> Void
 
-  public var startMonitoringSignificantLocationChanges: () async -> Void
+  public var startMonitoringSignificantLocationChanges: @Sendable () async -> Void
 
-  public var startMonitoringVisits: () async -> Void
+  public var startMonitoringVisits: @Sendable () async -> Void
 
-  public var startUpdatingHeading: () async -> Void
+  public var startUpdatingHeading: @Sendable () async -> Void
 
-  public var startUpdatingLocation: () async -> Void
+  public var startUpdatingLocation: @Sendable () async -> Void
 
-  public var stopMonitoringForRegion: (Region) async -> Void
+  public var stopMonitoringForRegion: @Sendable (Region) async -> Void
 
-  public var stopMonitoringSignificantLocationChanges: () async -> Void
+  public var stopMonitoringSignificantLocationChanges: @Sendable () async -> Void
 
-  public var stopMonitoringVisits: () async -> Void
+  public var stopMonitoringVisits: @Sendable () async -> Void
 
-  public var stopUpdatingHeading: () async -> Void
+  public var stopUpdatingHeading: @Sendable () async -> Void
 
-  public var stopUpdatingLocation: () async -> Void
+  public var stopUpdatingLocation: @Sendable () async -> Void
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
   public func set(
@@ -338,7 +338,7 @@ public struct LocationManager {
 }
 
 extension LocationManager {
-  public struct Properties: Equatable {
+  public struct Properties: Equatable, Sendable {
     var activityType: CLActivityType? = nil
 
     var allowsBackgroundLocationUpdates: Bool? = nil

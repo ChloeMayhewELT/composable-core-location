@@ -1,6 +1,6 @@
 import Combine
 import ComposableArchitecture
-import CoreLocation
+@preconcurrency import CoreLocation
 
 extension LocationManager {
   /// The live implementation of the `LocationManager` interface. This implementation is capable of
@@ -20,7 +20,7 @@ extension LocationManager {
     let manager = CLLocationManager()
 
     let delegate = {
-      let subject = PassthroughSubject<Action, Never>()
+      let subject = UncheckedSendable(PassthroughSubject<Action, Never>())
       let (stream, continuation) = AsyncStream<Action>.makeStream()
       let delegate = LocationManagerDelegate(continuation)
       manager.delegate = delegate
@@ -28,12 +28,12 @@ extension LocationManager {
         Task { [delegate] in
           _ = delegate // Retain the delegate for the life-cycle of the task.
           for await value in stream {
-            subject.send(value)
+            subject.wrappedValue.send(value)
           }
-          subject.send(completion: .finished)
+          subject.wrappedValue.send(completion: .finished)
         }
       }
-      return subject.share().values.eraseToStream()
+        return subject.wrappedValue.share().values.eraseToStream()
     }()
 
     return Self(
@@ -237,7 +237,7 @@ extension LocationManager {
   }
 }
 
-private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
+private final class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, Sendable {
   let subscriber: AsyncStream<LocationManager.Action>.Continuation
 
   init(_ subscriber: AsyncStream<LocationManager.Action>.Continuation) {
